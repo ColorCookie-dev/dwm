@@ -1,4 +1,5 @@
 .ccls-cache/
+dwm
 *.orig
 *.o
 patches/
