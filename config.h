@@ -65,6 +65,14 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *rangercmd[]  = { "st", "-e", "ranger", NULL };
+static const char *alsamixercmd[]  = { "st", "-e", "alsamixer", NULL };
+static const char *brightness_up[]  = { "xbacklight", "-inc", "5", NULL };
+static const char *brightness_down[]  = { "xbacklight", "-dec", "5", NULL };
+static const char *vol_up[]  = { "amixer", "set", "Master", "2%+", NULL };
+static const char *vol_down[]  = { "amixer", "set", "Master", "2%-", NULL };
+static const char *vol_mute[]  = { "amixer", "set", "Master", "mute", NULL };
+static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -119,6 +127,18 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,                       XK_r,      spawn,          {.v = rangercmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = alsamixercmd } },
+
+    // Special Keys
+   /* mod  key                                      function  argument */
+    { 0,   0x1008ff02 /* XF86MonBrightnessUp */,    spawn,    {.v = brightness_up } },
+    { 0,   0x1008ff03 /* XF86MonBrightnessDown */,  spawn,    {.v = brightness_down } },
+    { 0,   0x1008ff2d /* XF86ScreenSaver */,        spawn,    {.v = suspendcmd } },
+    //{ 0,   0x1008ffa9 [> XF86TouchpadToggle <],     spawn,    {.v = toggle_touchpad } },
+    { 0,   0x1008ff12 /* XF86AudioMute */,          spawn,    {.v = vol_mute } },
+    { 0,   0x1008ff11 /* XF86AudioLowerVolume */,   spawn,    {.v = vol_down } },
+    { 0,   0x1008ff13 /* XF86AudioRaiseVolume */,   spawn,    {.v = vol_up } },
 };
 
 /* button definitions */
