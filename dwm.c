@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -146,6 +147,7 @@ typedef struct {
 } Rule;
 
 /* function declarations */
+static bool confirm(const char* prompt, bool default_val);
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
 static void arrange(Monitor *m);
@@ -293,6 +295,46 @@ static Window root, wmcheckwin;
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
+bool
+confirm(const char *prompt, bool default_val) {
+    size_t len_cmd_without_prompt = strlen("printf \"No\nYes\" | dmenu -i -f -p \"\"");
+    size_t total_cmd_len = len_cmd_without_prompt + strlen(prompt) + 1;
+
+    char *cmd = (char*)malloc(total_cmd_len * sizeof(char));
+    if (cmd == 0) {
+        fprintf(stderr, "Out of memory error!");
+        return false;
+    }
+
+    if (default_val == true) {
+        snprintf(cmd, total_cmd_len, "printf \"Yes\nNo\" | dmenu -i -f -p \"%s\"", prompt);
+    } else {
+        snprintf(cmd, total_cmd_len, "printf \"No\nYes\" | dmenu -i -f -p \"%s\"", prompt);
+    }
+
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) {
+        fprintf(stderr, "Popen failed for %s !", cmd);
+        goto fn_fail_cleanup;
+    }
+
+    char outbuf[5];
+    fgets(outbuf, 5, pipe);
+    if (strncmp(outbuf, "Yes", 3) == 0) {
+        goto fn_success_cleanup;
+    } else {
+        goto fn_fail_cleanup;
+    }
+
+fn_fail_cleanup:
+    free(cmd);
+    return false;
+
+fn_success_cleanup:
+    free(cmd);
+    return true;
+}
+
 void
 applyrules(Client *c)
 {
@@ -1023,17 +1065,19 @@ keypress(XEvent *e)
 void
 killclient(const Arg *arg)
 {
-	if (!selmon->sel)
-		return;
-	if (!sendevent(selmon->sel, wmatom[WMDelete])) {
-		XGrabServer(dpy);
-		XSetErrorHandler(xerrordummy);
-		XSetCloseDownMode(dpy, DestroyAll);
-		XKillClient(dpy, selmon->sel->win);
-		XSync(dpy, False);
-		XSetErrorHandler(xerror);
-		XUngrabServer(dpy);
-	}
+    if (confirm("Kill Window?", true)) {
+        if (!selmon->sel)
+            return;
+        if (!sendevent(selmon->sel, wmatom[WMDelete])) {
+            XGrabServer(dpy);
+            XSetErrorHandler(xerrordummy);
+            XSetCloseDownMode(dpy, DestroyAll);
+            XKillClient(dpy, selmon->sel->win);
+            XSync(dpy, False);
+            XSetErrorHandler(xerror);
+            XUngrabServer(dpy);
+        }
+    }
 }
 
 void
@@ -1270,7 +1314,9 @@ propertynotify(XEvent *e)
 void
 quit(const Arg *arg)
 {
-	running = 0;
+    if (confirm("Do You Want To Quit DWM?", false)) {
+        running = 0;
+    }
 }
 
 Monitor *
