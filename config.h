@@ -148,13 +148,13 @@ static Key keys[] = {
 
     // Special Keys
    /* mod  key                                      function  argument */
-    { 0,   0x1008ff02 /* XF86MonBrightnessUp */,    spawn,    {.v = brightness_up } },
-    { 0,   0x1008ff03 /* XF86MonBrightnessDown */,  spawn,    {.v = brightness_down } },
-    { 0,   0x1008ff2d /* XF86ScreenSaver */,        spawn,    {.v = suspendcmd } },
-    //{ 0,   0x1008ffa9 [> XF86TouchpadToggle <],     spawn,    {.v = toggle_touchpad } },
-    { 0,   0x1008ff12 /* XF86AudioMute */,          spawn,    {.v = vol_mute } },
-    { 0,   0x1008ff11 /* XF86AudioLowerVolume */,   spawn,    {.v = vol_down } },
-    { 0,   0x1008ff13 /* XF86AudioRaiseVolume */,   spawn,    {.v = vol_up } },
+	{ 0,   0x1008ff02 /* XF86MonBrightnessUp */,    spawn,    {.v = brightness_up } },
+	{ 0,   0x1008ff03 /* XF86MonBrightnessDown */,  spawn,    {.v = brightness_down } },
+	{ 0,   0x1008ff2d /* XF86ScreenSaver */,        spawn,    {.v = suspendcmd } },
+	//{ 0,   0x1008ffa9 [> XF86TouchpadToggle <],     spawn,    {.v = toggle_touchpad } },
+	{ 0,   0x1008ff12 /* XF86AudioMute */,          spawn,    {.v = vol_mute } },
+	{ 0,   0x1008ff11 /* XF86AudioLowerVolume */,   spawn,    {.v = vol_down } },
+	{ 0,   0x1008ff13 /* XF86AudioRaiseVolume */,   spawn,    {.v = vol_up } },
 };
 
 /* button definitions */

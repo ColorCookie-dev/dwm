@@ -46,27 +46,27 @@
 #include "util.h"
 
 /* macros */
-#define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
-#define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
-#define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
-                               * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
-#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
-#define LENGTH(X)               (sizeof X / sizeof X[0])
-#define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
-#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
-#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-#define TAGMASK                 ((1 << LENGTH(tags)) - 1)
-#define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define BUTTONMASK				(ButtonPressMask|ButtonReleaseMask)
+#define CLEANMASK(mask)			(mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+#define INTERSECT(x,y,w,h,m)	(MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+							   * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
+#define ISVISIBLE(C)			((C->tags & C->mon->tagset[C->mon->seltags]))
+#define LENGTH(X)				(sizeof X / sizeof X[0])
+#define MOUSEMASK				(BUTTONMASK|PointerMotionMask)
+#define WIDTH(X)				((X)->w + 2 * (X)->bw)
+#define HEIGHT(X)				((X)->h + 2 * (X)->bw)
+#define TAGMASK					((1 << LENGTH(tags)) - 1)
+#define TEXTW(X)				(drw_fontset_getwidth(drw, (X)) + lrpad)
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
 enum { SchemeNorm, SchemeSel }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
-       NetWMFullscreen, NetActiveWindow, NetWMWindowType,
-       NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+	   NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+	   NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
 enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
+	   ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
 
 typedef union {
 	int i;
@@ -117,13 +117,13 @@ struct Monitor {
 	float mfact;
 	int nmaster;
 	int num;
-	int by;               /* bar geometry */
+	int by;				  /* bar geometry */
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
-	int gappih;           /* horizontal gap between windows */
-	int gappiv;           /* vertical gap between windows */
-	int gappoh;           /* horizontal outer gaps */
-	int gappov;           /* vertical outer gaps */
+	int gappih;			  /* horizontal gap between windows */
+	int gappiv;			  /* vertical gap between windows */
+	int gappoh;			  /* horizontal outer gaps */
+	int gappov;			  /* vertical outer gaps */
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -258,10 +258,10 @@ static void centeredfloatingmaster(Monitor *m);
 static const char broken[] = "broken";
 static char stext[256];
 static int screen;
-static int sw, sh;           /* X display screen geometry width, height */
-static int bh, blw = 0;      /* bar geometry */
-static int enablegaps = 1;   /* enables gaps, used by togglegaps */
-static int lrpad;            /* sum of left and right padding for text */
+static int sw, sh;			 /* X display screen geometry width, height */
+static int bh, blw = 0;		 /* bar geometry */
+static int enablegaps = 1;	 /* enables gaps, used by togglegaps */
+static int lrpad;			 /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
@@ -297,42 +297,42 @@ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 /* function implementations */
 bool
 confirm(const char *prompt, bool default_val) {
-    size_t len_cmd_without_prompt = strlen("printf \"No\nYes\" | dmenu -i -f -p \"\"");
-    size_t total_cmd_len = len_cmd_without_prompt + strlen(prompt) + 1;
+	size_t len_cmd_without_prompt = strlen("printf \"No\nYes\" | dmenu -i -f -p \"\"");
+	size_t total_cmd_len = len_cmd_without_prompt + strlen(prompt) + 1;
 
-    char *cmd = (char*)malloc(total_cmd_len * sizeof(char));
-    if (cmd == 0) {
-        fprintf(stderr, "Out of memory error!");
-        return false;
-    }
+	char *cmd = (char*)malloc(total_cmd_len * sizeof(char));
+	if (cmd == 0) {
+		fprintf(stderr, "Out of memory error!");
+		return false;
+	}
 
-    if (default_val == true) {
-        snprintf(cmd, total_cmd_len, "printf \"Yes\nNo\" | dmenu -i -f -p \"%s\"", prompt);
-    } else {
-        snprintf(cmd, total_cmd_len, "printf \"No\nYes\" | dmenu -i -f -p \"%s\"", prompt);
-    }
+	if (default_val == true) {
+		snprintf(cmd, total_cmd_len, "printf \"Yes\nNo\" | dmenu -i -f -p \"%s\"", prompt);
+	} else {
+		snprintf(cmd, total_cmd_len, "printf \"No\nYes\" | dmenu -i -f -p \"%s\"", prompt);
+	}
 
-    FILE* pipe = popen(cmd, "r");
-    if (!pipe) {
-        fprintf(stderr, "Popen failed for %s !", cmd);
-        goto fn_fail_cleanup;
-    }
+	FILE* pipe = popen(cmd, "r");
+	if (!pipe) {
+		fprintf(stderr, "Popen failed for %s !", cmd);
+		goto fn_fail_cleanup;
+	}
 
-    char outbuf[5];
-    fgets(outbuf, 5, pipe);
-    if (strncmp(outbuf, "Yes", 3) == 0) {
-        goto fn_success_cleanup;
-    } else {
-        goto fn_fail_cleanup;
-    }
+	char outbuf[5];
+	fgets(outbuf, 5, pipe);
+	if (strncmp(outbuf, "Yes", 3) == 0) {
+		goto fn_success_cleanup;
+	} else {
+		goto fn_fail_cleanup;
+	}
 
 fn_fail_cleanup:
-    free(cmd);
-    return false;
+	free(cmd);
+	return false;
 
 fn_success_cleanup:
-    free(cmd);
-    return true;
+	free(cmd);
+	return true;
 }
 
 void
@@ -348,8 +348,8 @@ applyrules(Client *c)
 	c->isfloating = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
-	class    = ch.res_class ? ch.res_class : broken;
-	instance = ch.res_name  ? ch.res_name  : broken;
+	class	 = ch.res_class ? ch.res_class : broken;
+	instance = ch.res_name	? ch.res_name  : broken;
 
 	for (i = 0; i < LENGTH(rules); i++) {
 		r = &rules[i];
@@ -580,7 +580,7 @@ clientmessage(XEvent *e)
 	if (cme->message_type == netatom[NetWMState]) {
 		if (cme->data.l[1] == netatom[NetWMFullscreen]
 		|| cme->data.l[2] == netatom[NetWMFullscreen])
-			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
+			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD	  */
 				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */ && !c->isfullscreen)));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
 		if (c != selmon->sel && !c->isurgent)
@@ -1046,19 +1046,19 @@ keypress(XEvent *e)
 void
 killclient(const Arg *arg)
 {
-    if (confirm("Kill Window?", true)) {
-        if (!selmon->sel)
-            return;
-        if (!sendevent(selmon->sel, wmatom[WMDelete])) {
-            XGrabServer(dpy);
-            XSetErrorHandler(xerrordummy);
-            XSetCloseDownMode(dpy, DestroyAll);
-            XKillClient(dpy, selmon->sel->win);
-            XSync(dpy, False);
-            XSetErrorHandler(xerror);
-            XUngrabServer(dpy);
-        }
-    }
+	if (confirm("Kill Window?", true)) {
+		if (!selmon->sel)
+			return;
+		if (!sendevent(selmon->sel, wmatom[WMDelete])) {
+			XGrabServer(dpy);
+			XSetErrorHandler(xerrordummy);
+			XSetCloseDownMode(dpy, DestroyAll);
+			XKillClient(dpy, selmon->sel->win);
+			XSync(dpy, False);
+			XSetErrorHandler(xerror);
+			XUngrabServer(dpy);
+		}
+	}
 }
 
 void
@@ -1442,9 +1442,9 @@ propertynotify(XEvent *e)
 void
 quit(const Arg *arg)
 {
-    if (confirm("Do You Want To Quit DWM?", false)) {
-        running = 0;
-    }
+	if (confirm("Do You Want To Quit DWM?", false)) {
+		running = 0;
+	}
 }
 
 Monitor *
@@ -2494,19 +2494,19 @@ centeredmaster(Monitor *m)
 		 * of the screen */
 		h = (m->wh - my) / (MIN(n, m->nmaster) - i);
 		resize(c, m->wx + mx, m->wy + my, mw - (2*c->bw),
-		       h - (2*c->bw), 0);
+			   h - (2*c->bw), 0);
 		my += HEIGHT(c);
 	} else {
 		/* stack clients are stacked vertically */
 		if ((i - m->nmaster) % 2 ) {
 			h = (m->wh - ety) / ( (1 + n - i) / 2);
 			resize(c, m->wx, m->wy + ety, tw - (2*c->bw),
-			       h - (2*c->bw), 0);
+				   h - (2*c->bw), 0);
 			ety += HEIGHT(c);
 		} else {
 			h = (m->wh - oty) / ((1 + n - i) / 2);
 			resize(c, m->wx + mx + mw, m->wy + oty,
-			       tw - (2*c->bw), h - (2*c->bw), 0);
+				   tw - (2*c->bw), h - (2*c->bw), 0);
 			oty += HEIGHT(c);
 		}
 	}
@@ -2549,13 +2549,13 @@ centeredfloatingmaster(Monitor *m)
 		 * of the screen */
 		w = (mw + mxo - mx) / (MIN(n, m->nmaster) - i);
 		resize(c, m->wx + mx, m->wy + my, w - (2*c->bw),
-		       mh - (2*c->bw), 0);
+			   mh - (2*c->bw), 0);
 		mx += WIDTH(c);
 	} else {
 		/* stack clients are stacked horizontally */
 		w = (m->ww - tx) / (n - i);
 		resize(c, m->wx + tx, m->wy, w - (2*c->bw),
-		       m->wh - (2*c->bw), 0);
+			   m->wh - (2*c->bw), 0);
 		tx += WIDTH(c);
 	}
 }
