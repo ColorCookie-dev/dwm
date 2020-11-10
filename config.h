@@ -145,6 +145,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY,                       XK_r,      spawn,          {.v = rangercmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = alsamixercmd } },
+	{ MODKEY|Mod1Mask,				XK_f,      togglefloating, {0} },
 
     // Special Keys
    /* mod  key                                      function  argument */
