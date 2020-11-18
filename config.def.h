@@ -68,6 +68,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *rangercmd[]  = { TERMINAL, "-e", "ranger", NULL };
 static const char *alsamixercmd[]  = { TERMINAL, "-e", "pulsemixer", NULL };
+static const char *openstatconf[]  = { TERMINAL, "-e", "nvim +\":cd ~/repos/suckless/dwmblocks/\" ~/repos/suckless/dwmblocks/blocks.h", NULL };
 static const char *brightness_up[]  = { "xbacklight", "-inc", "5", NULL };
 static const char *brightness_down[]  = { "xbacklight", "-dec", "5", NULL };
 static const char *vol_up[]  = { "amixer", "set", "Master", "2%+", NULL };
@@ -153,7 +154,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY,                       XK_r,      spawn,          {.v = rangercmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = alsamixercmd } },
-	{ MODKEY|Mod1Mask,				XK_f,      togglefloating, {0} },
 
     // Special Keys
    /* mod  key                                      function  argument */
@@ -173,7 +173,7 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button3,        spawn,          SHCMD(TERMINAL " -e nvim +\":cd ~/repos/suckless/dwmblocks/\" ~/repos/suckless/dwmblocks/blocks.h") },
+	{ ClkStatusText,        0,              Button3,        spawn,          {.v = openstatconf } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
