@@ -1046,18 +1046,16 @@ keypress(XEvent *e)
 void
 killclient(const Arg *arg)
 {
-	if (confirm("Kill Window?", true)) {
-		if (!selmon->sel)
-			return;
-		if (!sendevent(selmon->sel, wmatom[WMDelete])) {
-			XGrabServer(dpy);
-			XSetErrorHandler(xerrordummy);
-			XSetCloseDownMode(dpy, DestroyAll);
-			XKillClient(dpy, selmon->sel->win);
-			XSync(dpy, False);
-			XSetErrorHandler(xerror);
-			XUngrabServer(dpy);
-		}
+	if (!selmon->sel)
+		return;
+	if (!sendevent(selmon->sel, wmatom[WMDelete])) {
+		XGrabServer(dpy);
+		XSetErrorHandler(xerrordummy);
+		XSetCloseDownMode(dpy, DestroyAll);
+		XKillClient(dpy, selmon->sel->win);
+		XSync(dpy, False);
+		XSetErrorHandler(xerror);
+		XUngrabServer(dpy);
 	}
 }
 
