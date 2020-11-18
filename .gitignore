@@ -3,4 +3,5 @@ config.h
 dwm
 *.orig
 *.o
+*.rej
 patches/
