@@ -72,7 +72,15 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *rangercmd[]  = { TERMINAL, "-e", "ranger", NULL };
 static const char *alsamixercmd[]  = { TERMINAL, "-e", "pulsemixer", NULL };
-static const char *openstatconf[]  = { TERMINAL, "-e", "nvim +\":cd ~/repos/suckless/dwmblocks/\" ~/repos/suckless/dwmblocks/blocks.h", NULL };
+
+// For eaiser tinkering cycle
+static const char *openstatconf[]  = { TERMINAL, "-e",
+	"vim "
+	"+\":cd ~/repos/suckless/dwmblocks/\" "
+	"+\":noremap <leader>m :!make<CR>:!sudo make install<CR>\" "
+	"~/repos/suckless/dwmblocks/blocks.h",
+	NULL };
+
 static const char *brightness_up[]  = { "xbacklight", "-inc", "5", NULL };
 static const char *brightness_down[]  = { "xbacklight", "-dec", "5", NULL };
 static const char *vol_up[]  = { "amixer", "set", "Master", "2%+", NULL };
