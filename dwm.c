@@ -147,7 +147,6 @@ typedef struct {
 } Rule;
 
 /* function declarations */
-static bool confirm(const char* prompt, bool default_val);
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
 static void arrange(Monitor *m);
@@ -162,6 +161,8 @@ static void clientmessage(XEvent *e);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
+// Don't pass in prompts longer than 50 characters
+static bool confirm(const char* prompt);
 static Monitor *createmon(void);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
@@ -298,46 +299,6 @@ static Window root, wmcheckwin;
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
-bool
-confirm(const char *prompt, bool default_val) {
-	size_t len_cmd_without_prompt = strlen("printf \"No\nYes\" | dmenu -i -f -p \"\"");
-	size_t total_cmd_len = len_cmd_without_prompt + strlen(prompt) + 1;
-
-	char *cmd = (char*)malloc(total_cmd_len * sizeof(char));
-	if (cmd == 0) {
-		fprintf(stderr, "Out of memory error!");
-		return false;
-	}
-
-	if (default_val == true) {
-		snprintf(cmd, total_cmd_len, "printf \"Yes\nNo\" | dmenu -i -f -p \"%s\"", prompt);
-	} else {
-		snprintf(cmd, total_cmd_len, "printf \"No\nYes\" | dmenu -i -f -p \"%s\"", prompt);
-	}
-
-	FILE* pipe = popen(cmd, "r");
-	if (!pipe) {
-		fprintf(stderr, "Popen failed for %s !", cmd);
-		goto fn_fail_cleanup;
-	}
-
-	char outbuf[5];
-	fgets(outbuf, 5, pipe);
-	if (strncmp(outbuf, "Yes", 3) == 0) {
-		goto fn_success_cleanup;
-	} else {
-		goto fn_fail_cleanup;
-	}
-
-fn_fail_cleanup:
-	free(cmd);
-	return false;
-
-fn_success_cleanup:
-	free(cmd);
-	return true;
-}
-
 void
 applyrules(Client *c)
 {
@@ -695,6 +656,22 @@ configurerequest(XEvent *e)
 	XSync(dpy, False);
 }
 
+bool
+confirm(const char *prompt) {
+	char cmd[37 + 50 + 1];
+	snprintf(cmd, 37 + 50 + 1, "printf \"Yes\nNo\" | dmenu -i -f -p \"%s\"", prompt);
+
+	FILE* pipe = popen(cmd, "r");
+	if (!pipe) {
+		fprintf(stderr, "Popen failed for %s !", cmd);
+		return false;
+	}
+
+	char outbuf[4];
+	fgets(outbuf, 4, pipe);
+	return (strncmp(outbuf, "Yes", 3) == 0);
+}
+
 Monitor *
 createmon(void)
 {
@@ -776,8 +753,8 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
+		tw = TEXTW(stext);
+		drw_text(drw, m->ww - tw, 0, tw, bh, lrpad / 2, stext, 0);
 	}
 
 	for (c = m->clients; c; c = c->next) {
@@ -1448,7 +1425,7 @@ propertynotify(XEvent *e)
 void
 quit(const Arg *arg)
 {
-	if (confirm("Want To Quit/Restart DWM?", true)) {
+	if (confirm("Quit/Restart DWM?")) {
 		if (arg->i) restart = 1;
 		running = 0;
 	}
