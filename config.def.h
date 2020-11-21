@@ -81,13 +81,6 @@ static const char *openstatconf[]  = { TERMINAL, "-e",
 	"~/repos/suckless/dwmblocks/blocks.h",
 	NULL };
 
-static const char *brightness_up[]  = { "xbacklight", "-inc", "5", NULL };
-static const char *brightness_down[]  = { "xbacklight", "-dec", "5", NULL };
-static const char *vol_up[]  = { "amixer", "set", "Master", "2%+", NULL };
-static const char *vol_down[]  = { "amixer", "set", "Master", "2%-", NULL };
-static const char *vol_mute[]  = { "amixer", "set", "Master", "mute", NULL };
-static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
-
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_w,      spawn,          {.v = dmenucmd } },
@@ -171,14 +164,14 @@ static Key keys[] = {
 	{ MODKEY,                       XK_s,      spawn,          {.v = alsamixercmd } },
 
     // Special Keys
-   /* mod  key                                      function  argument */
-	{ 0,   0x1008ff02 /* XF86MonBrightnessUp */,    spawn,    {.v = brightness_up } },
-	{ 0,   0x1008ff03 /* XF86MonBrightnessDown */,  spawn,    {.v = brightness_down } },
-	{ 0,   0x1008ff2d /* XF86ScreenSaver */,        spawn,    {.v = suspendcmd } },
-	//{ 0,   0x1008ffa9 [> XF86TouchpadToggle <],     spawn,    {.v = toggle_touchpad } },
-	{ 0,   0x1008ff12 /* XF86AudioMute */,          spawn,    {.v = vol_mute } },
-	{ 0,   0x1008ff11 /* XF86AudioLowerVolume */,   spawn,    {.v = vol_down } },
-	{ 0,   0x1008ff13 /* XF86AudioRaiseVolume */,   spawn,    {.v = vol_up } },
+   /* mod  key                          function  argument */
+	{ 0,   XF86XK_MonBrightnessUp,		spawn,    SHCMD("xbacklight -inc 5; pkill -RTMIN+12 dwmblocks") },
+	{ 0,   XF86XK_MonBrightnessDown,	spawn,    SHCMD("xbacklight -dec 5; pkill -RTMIN+12 dwmblocks") },
+	{ 0,   XF86XK_ScreenSaver,			spawn,    SHCMD("systemctl suspend") },
+	{ 0,   XF86XK_AudioMute,			spawn,    SHCMD("amixer set Master mute; kill -44 $(pidof dwmblocks)") },
+	{ 0,   XF86XK_AudioLowerVolume,		spawn,    SHCMD("amixer set Master 2%-; kill -44 $(pidof dwmblocks)") },
+	{ 0,   XF86XK_AudoRaiseVolume,		spawn,    SHCMD("amixer set Master 2%+; kill -44 $(pidof dwmblocks)") },
+	//{ 0,   XF86XK_TouchpadToggle,		spawn,    {.v = toggle_touchpad } },
 };
 
 /* button definitions */
