@@ -73,14 +73,6 @@ static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *rangercmd[]  = { TERMINAL, "-e", "ranger", NULL };
 static const char *alsamixercmd[]  = { TERMINAL, "-e", "pulsemixer", NULL };
 
-// For eaiser tinkering cycle
-static const char *openstatconf[]  = { TERMINAL, "-e",
-	"vim "
-	"+\":cd ~/repos/suckless/dwmblocks/\" "
-	"+\":noremap <leader>m :!make<CR>:!sudo make install<CR>\" "
-	"~/repos/suckless/dwmblocks/blocks.h",
-	NULL };
-
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_w,      spawn,          {.v = dmenucmd } },
@@ -181,7 +173,12 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button3,        spawn,          {.v = openstatconf } },
+	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
+	{ ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 4} },
+	{ ClkStatusText,        ShiftMask,      Button2,        sigdwmblocks,   {.i = 5} },
+	{ ClkStatusText,        ShiftMask,      Button3,        spawn,			SHCMD("$TERMINAL -e nvim ~/repos/suckless/dwmblocks/blocks.def.h") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
