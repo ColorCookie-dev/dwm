@@ -100,12 +100,12 @@ static Key keys[] = {
 
     // Special Keys
    /* mod  key                          function  argument */
-	{ 0,   XF86XK_MonBrightnessUp,		spawn,    SHCMD("xbacklight -inc 5") },
-	{ 0,   XF86XK_MonBrightnessDown,	spawn,    SHCMD("xbacklight -dec 5") },
+	{ 0,   XF86XK_MonBrightnessUp,		spawn,    SHCMD("xbacklight -inc 5; pkill -RTMIN+12 dwmblocks") },
+	{ 0,   XF86XK_MonBrightnessDown,	spawn,    SHCMD("xbacklight -dec 5; pkill -RTMIN+12 dwmblocks") },
 	{ 0,   XF86XK_ScreenSaver,			spawn,    SHCMD("systemctl suspend") },
-	{ 0,   XF86XK_AudioMute,			spawn,    SHCMD("amixer set Master mute") },
-	{ 0,   XF86XK_AudioLowerVolume,		spawn,    SHCMD("amixer set Master 2%-") },
-	{ 0,   XF86XK_AudioRaiseVolume,		spawn,    SHCMD("amixer set Master 2%+") },
+	{ 0,   XF86XK_AudioMute,			spawn,    SHCMD("amixer set Master mute; pkill -RTMIN+10 dwmblocks") },
+	{ 0,   XF86XK_AudioLowerVolume,		spawn,    SHCMD("amixer set Master 2%-; pkill -RTMIN+10 dwmblocks") },
+	{ 0,   XF86XK_AudioRaiseVolume,		spawn,    SHCMD("amixer set Master 2%+; pkill -RTMIN+10 dwmblocks") },
 	//{ 0,   XF86XK_TouchpadToggle,		spawn,    {.v = toggle_touchpad } },
 };
 
