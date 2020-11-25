@@ -70,8 +70,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
-static const char *rangercmd[]  = { TERMINAL, "-e", "ranger", NULL };
-static const char *alsamixercmd[]  = { TERMINAL, "-e", "pulsemixer", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -152,8 +150,6 @@ static Key keys[] = {
 
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY,                       XK_q,      quit,           {1} }, 
-	{ MODKEY,                       XK_e,      spawn,          {.v = rangercmd } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = alsamixercmd } },
 
     // Special Keys
    /* mod  key                          function  argument */
