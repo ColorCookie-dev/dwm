@@ -158,9 +158,9 @@ static Key keys[] = {
 	{ 0,   XF86XK_MonBrightnessUp,		spawn,    SHCMD("xbacklight -inc 5; pkill -RTMIN+12 dwmblocks") },
 	{ 0,   XF86XK_MonBrightnessDown,	spawn,    SHCMD("xbacklight -dec 5; pkill -RTMIN+12 dwmblocks") },
 	{ 0,   XF86XK_ScreenSaver,			spawn,    SHCMD("systemctl suspend") },
-	{ 0,   XF86XK_AudioMute,			spawn,    SHCMD("amixer set Master mute; pkill -RTMIN+10 dwmblocks") },
-	{ 0,   XF86XK_AudioLowerVolume,		spawn,    SHCMD("amixer set Master 2%-; pkill -RTMIN+10 dwmblocks") },
-	{ 0,   XF86XK_AudioRaiseVolume,		spawn,    SHCMD("amixer set Master 2%+; pkill -RTMIN+10 dwmblocks") },
+	{ 0,   XF86XK_AudioMute,			spawn,    SHCMD("pulsemixer --toggle-mute; pkill -RTMIN+10 dwmblocks") },
+	{ 0,   XF86XK_AudioLowerVolume,		spawn,    SHCMD("pulsemixer --change-volume -2; pkill -RTMIN+10 dwmblocks") },
+	{ 0,   XF86XK_AudioRaiseVolume,		spawn,    SHCMD("pulsemixer --change-volume +2; pkill -RTMIN+10 dwmblocks") },
 	//{ 0,   XF86XK_TouchpadToggle,		spawn,    {.v = toggle_touchpad } },
 };
 
