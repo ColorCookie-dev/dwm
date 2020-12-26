@@ -34,9 +34,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class         instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",        NULL,       NULL,       0,            1,           -1 },
+	{ "Tor Browser", NULL,       NULL,       1 << 7,       1,           -1 },
+	{ "Firefox",     NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -68,7 +69,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-#define TERMINAL "uxterm"
+#define TERMINAL "st"
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_crimson, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
